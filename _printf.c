@@ -3,7 +3,12 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-/**/
+/**
+* _printf - prints anything
+* @format: character string containing directives
+*
+* Return: number of characters printed
+*/
 int _printf(const char *format, ...)
 {
 	va_list arguments;
@@ -25,38 +30,41 @@ int _printf(const char *format, ...)
 		va_end(arguments);
 		return (-1);
 	}
-	for (i = 0; format[i]; i++)
+	while (format[i] != '\0' && format != NULL)
 	{
-		if (format[i] == '%')
+		for (i = 0; format[i]; i++)
 		{
-			i++;
-			switch (format[i])
+			if (format[i] == '%')
 			{
-				case 'c':
-					putchar((char)va_arg(arguments, int));
-					break;
-				case 's':
-					char *str = va_arg(arguments, char*);
-					for (int j = 0; str[j]; j++)
-					putchar(str[j]);
-					break;
-				case 'd':
-				case 'i':
-				case '%':
-					putchar('%');
-					break;
+				i++;
+				switch (format[i])
+				{
+					case 'c':
+						putchar((char)va_arg(arguments, int));
+						break;
+					case 's':
+						char *str = va_arg(arguments, char*);
+						for (int j = 0; str[j]; j++)
+							putchar(str[j]);
+						break;
+					case 'd':
+						putchar(va_arg(arguments, int));
+						break;
+					case 'i':
+						putchar(va_arg(arguments, int));
+						break;
+					case '%':
+						putchar('%');
+						break;
+				}
 			}
+			else
+				str[i] = format[i];
 		}
-		else
-		{
-		str[i] = format[i];
-		}
-	}
-        str[i] = '\0';
+        	str[i] = '\0';
 
-	write(1, str, len);
-	va_end(arguments);
-	free(str);
-	return (len);
+		write(1, str, len);
+		va_end(arguments);
+		free(str);
+		return (len);
 }
-
