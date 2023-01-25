@@ -12,7 +12,7 @@
 int _printf(const char *format, ...)
 {
 	va_list arguments;
-	int i;
+	int i, j;
 	int len = 0;
 	char *str;
 
@@ -23,48 +23,49 @@ int _printf(const char *format, ...)
 		return (-1);
 	}
 
-	len = strlen(format);
-	str = malloc(len + 1);
-	if (!str)
+	for (i = 0; format[i] != '\0'; i++)
 	{
-		va_end(arguments);
-		return (-1);
-	}
-	while (format[i] != '\0' && format != NULL)
-	{
-		for (i = 0; format[i]; i++)
+		if (format[i] == '%')
 		{
-			if (format[i] == '%')
+			i++;
+			switch (format[i])
 			{
-				i++;
-				switch (format[i])
-				{
-					case 'c':
-						putchar((char)va_arg(arguments, int));
-						break;
-					case 's':
-						char *str = va_arg(arguments, char*);
-						for (int j = 0; str[j]; j++)
+			case 'c':
+				putchar((char)va_arg(arguments, int));
+				len++;
+				break;
+			case 's':
+				str = va_arg(arguments, char*);
+					if (str == NULL)
+					{
+						write(1, "(null)", 0);
+						len += 0;
+					}
+					else
+					{
+						for (j = 0; str[j] != '\0'; j++)
+						{
 							putchar(str[j]);
-						break;
-					case 'd':
-						putchar(va_arg(arguments, int));
-						break;
-					case 'i':
-						putchar(va_arg(arguments, int));
-						break;
-					case '%':
-						putchar('%');
-						break;
-				}
+							len++;
+						}
+					}
+					break;
+			case '%':
+					putchar('%');
+					len++;
+					break;
+			default:
+					putchar(format[i]);
+					len++;
+					break;
 			}
-			else
-				str[i] = format[i];
 		}
-        	str[i] = '\0';
-
-		write(1, str, len);
-		va_end(arguments);
-		free(str);
-		return (len);
+                else
+                {
+                        putchar(format[i]);
+                        len++;
+                }
+        }
+        va_end(arguments);
+	return (len);
 }
