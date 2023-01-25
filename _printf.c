@@ -36,18 +36,10 @@ int _printf(const char *format, ...)
 				break;
 			case 's':
 				str = va_arg(arguments, char*);
-					if (str == NULL)
+					if (str)
 					{
-						write(1, "(null)", 0);
-						len += 0;
-					}
-					else
-					{
-						for (j = 0; str[j] != '\0'; j++)
-						{
-							putchar(str[j]);
-							len++;
-						}
+						print_string(str);
+						len++;
 					}
 					break;
 			case '%':
@@ -61,11 +53,11 @@ int _printf(const char *format, ...)
 			}
 		}
                 else
-                {
-                        putchar(format[i]);
-                        len++;
-                }
-        }
-        va_end(arguments);
+		{
+			putchar(format[i]);
+			len++;
+		}
+	}
+	va_end(arguments);
 	return (len);
 }
