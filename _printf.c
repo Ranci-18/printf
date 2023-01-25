@@ -15,14 +15,16 @@ int _printf(const char *format, ...)
 	va_list arguments;
 	int i, j;
 	int len = 0;
-	char *str;
+	char *str, *buf;
 
 	va_start(arguments, format);
 	if (!format)
 		return (-1);
 	for (i = 0; format[i] != '\0'; i++)
 	{
-		if (format[i] == '%')
+		putchar(format[i]);
+		len++;
+		if (format[i] == '%')		
 		{
 			i++;
 			switch (format[i])
@@ -42,18 +44,20 @@ int _printf(const char *format, ...)
 						}
 					}
 				break;
-
+			case 'd':
+			case 'i':
+				buf = malloc(strlen(format));
+				len = sprintf(buf, "%i", va_arg(arguments, int));
+				write(1, buf, strlen(buf));
+				break;
 			case '%':
 				putchar('%');
 				len++;
 				break;
+			default:
+				putchar(format[i]);
+				len++;
 			}
-		}
-
-                else
-		{
-			putchar(format[i]);
-			len++;
 		}
 	}
 	va_end(arguments);
