@@ -33,34 +33,21 @@ int _printf(const char *format, ...)
 				break;
 			case 's':
 				str = va_arg(arguments, char*);
-<<<<<<< HEAD
-					if (str)
-					{
-						print_string(str);
-						len++;
-					}
-					break;
-=======
-				if (str == NULL)
-					write(1, "(null)", 0);
-				else
+				if (str)
 				{
 					print_string(str);
 					len++;
 				}
 				break;
->>>>>>> 3c62a75912b293f325d9fc2b861a84fc1c798502
+
 			case '%':
 				putchar('%');
 				len++;
 				break;
 			}
 		}
-<<<<<<< HEAD
+
                 else
-=======
-		else
->>>>>>> 3c62a75912b293f325d9fc2b861a84fc1c798502
 		{
 			putchar(format[i]);
 			len++;
