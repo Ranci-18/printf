@@ -13,7 +13,7 @@
 int _printf(const char *format, ...)
 {
 	va_list arguments;
-	int i, j;
+	int i;
 	int len = 0;
 	char *str;
 
@@ -33,10 +33,11 @@ int _printf(const char *format, ...)
 				break;
 			case 's':
 				str = va_arg(arguments, char*);
-				if (str != NULL)
+				if (str == NULL)
+					write(1, "(null)", 0);
+				else
 				{
-					for (j = 0; str[j]; j++)
-						putchar(str[j]);
+					print_string(str);
 					len++;
 				}
 				break;
