@@ -3,7 +3,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "main.h"
 /**
 * _printf - prints anything
 * @format: character string containing directives
@@ -13,7 +12,7 @@
 int _printf(const char *format, ...)
 {
 	va_list arguments;
-	int i;
+	int i, j;
 	int len = 0;
 	char *str;
 
@@ -35,7 +34,8 @@ int _printf(const char *format, ...)
 				str = va_arg(arguments, char*);
 				if (str != NULL)
 				{
-					print_string(str);
+					for (j = 0; str[j]; j++)
+						putchar(str[j]);
 					len++;
 				}
 				break;
