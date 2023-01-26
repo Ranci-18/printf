@@ -23,7 +23,7 @@ int _printf(const char *format, ...)
 
 	va_start(arguments, format);
 	for (i = 0; format[i] != '\0'; i++)
-	{
+	{	
 		if (format[i])
 		{
 			if (format[i] == '%')
@@ -78,10 +78,12 @@ int _printf(const char *format, ...)
 						if (num > 9)
 						{
 							base = 10;
+
 							while (num / base > 9)
 							{
 								base *= 10;
 							}
+
 							while (base > 0)
 							{
 								num_temp = num / base;
