@@ -50,7 +50,7 @@ int _printf(const char *format, ...)
 						str = va_arg(arguments, char*);
 						if (str == NULL)
 						{
-							write(1, "(null)", 0);
+							write(1, "(null)", 6);
 						}
 						else
 						{
