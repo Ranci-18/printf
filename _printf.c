@@ -15,7 +15,7 @@ int _printf(const char *format, ...)
 	va_list arguments;
 	int i, j;
 	int len = 0;
-	char *str;
+	char *str, ch;
 	int num, num_temp, base;
 
 	if (!format)
@@ -32,15 +32,19 @@ int _printf(const char *format, ...)
 			switch (format[i])
 			{
 			case 'c':
-				putchar((char)va_arg(arguments, int));
-				len++;
+				ch = ((char)va_arg(arguments, int));
+				if (ch == '\0')
+				{
+					write(1, "(num)", 0);
+					len++;
+				}
+				else
+					putchar(ch);
 				break;
 			case 's':
 				str = va_arg(arguments, char*);
 				if (str == NULL)
-				{
 					write(1, "(null)", 0);
-				}
 				else
 				{
 					for (j = 0; str[j] != '\0'; j++)
@@ -68,9 +72,7 @@ int _printf(const char *format, ...)
 				{
 					base = 10;
 					while (num / base > 9)
-					{
 						base *= 10;
-					}
 					while (base > 0)
 					{
 						num_temp = num / base;
