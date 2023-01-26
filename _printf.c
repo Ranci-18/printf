@@ -19,22 +19,39 @@ int _printf(const char *format, ...)
 	int num, num_temp, base;
 
 	if (!format || format == NULL)
+<<<<<<< HEAD
 	return (-1);
 
 	va_start(arguments, format);
 	for (i = 0; format[i] != '\0'; i++)
 	{
+=======
+		return (-1);
+
+	va_start(arguments, format);
+	for (i = 0; format[i] != '\0'; i++)
+	{	
+>>>>>>> 560ab32a29fdf56f6d0020f80dafcc38a4bdf4a0
 		if (format[i])
 		{
 			if (format[i] == '%')
 			{
 				if (format[i + 1] == '\0')
+<<<<<<< HEAD
 				{
 					return (-1);
 				}
 				i++;
 				if (format[i]  == '%')
 				{
+=======
+				{
+					return (-1);
+				}
+				i++;
+				if (format[i]  == '%')
+				{
+>>>>>>> 560ab32a29fdf56f6d0020f80dafcc38a4bdf4a0
 					putchar('%');
 					len++;
 				}
@@ -42,6 +59,7 @@ int _printf(const char *format, ...)
 				{
 					switch (format[i])
 					{
+<<<<<<< HEAD
 						case 'c':
 							putchar((char)va_arg(arguments, int));
 							len++;
@@ -105,6 +123,68 @@ int _printf(const char *format, ...)
 				putchar(format[i]);
 				len++;
 			}
+=======
+					case 'c':
+						putchar((char)va_arg(arguments, int));
+						len++;
+						break;
+					case 's':
+						str = va_arg(arguments, char*);
+						if (str == NULL)
+						{
+							write(1, "(null)", 6);
+						}
+						else
+						{
+							for (j = 0; str[j] != '\0'; j++)
+							{
+								putchar(str[j]);
+								len++;
+							}
+						}
+						break;
+					case 'd':
+					case 'i':
+						num = va_arg(arguments, int);
+						if (num < 0)
+						{
+							num = -num;
+							putchar('-');
+							len++;
+						}
+						if (num >= 0 && num <= 9)
+						{
+							putchar(num + '0');
+							len++;
+						}
+						if (num > 9)
+						{
+							base = 10;
+
+							while (num / base > 9)
+							{
+								base *= 10;
+							}
+
+							while (base > 0)
+							{
+								num_temp = num / base;
+								num = num % base;
+								putchar(num_temp + '0');
+								base = base / 10;
+								len++;
+							}
+						}
+						break;
+					}
+				}
+			}
+		else
+		{
+			putchar(format[i]);
+			len++;
+		}
+>>>>>>> 560ab32a29fdf56f6d0020f80dafcc38a4bdf4a0
 		}
 	}
 	va_end(arguments);
