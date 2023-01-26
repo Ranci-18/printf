@@ -15,7 +15,7 @@ int _printf(const char *format, ...)
 	va_list arguments;
 	int i, j;
 	int len = 0;
-	char *str;
+	char *str, ch;
 	int num, num_temp, base;
 
 	if (!format || format == NULL)
@@ -43,8 +43,14 @@ int _printf(const char *format, ...)
 					switch (format[i])
 					{
 						case 'c':
-							putchar((char)va_arg(arguments, int));
-							len++;
+							ch = ((char)va_arg(arguments, int));
+							if (ch == '\0')
+								write(1, "(null)", 6);
+							else
+							{
+								putchar(ch);
+								len++;
+							}
 							break;
 						case 's':
 							str = va_arg(arguments, char*);
@@ -64,31 +70,34 @@ int _printf(const char *format, ...)
 						case 'd':
 						case 'i':
 							num = va_arg(arguments, int);
-							if (num < 0)
+							if (num == '\0')
+								write(1, "(null)", 6);
+							else
 							{
-								num = -num;
-								putchar('-');
-								len++;
-							}
-							if (num >= 0 && num <= 9)
-							{
-								putchar(num + '0');
-								len++;
-							}
-							if (num > 9)
-							{
-								base = 10;
-								while (num / base > 9)
+								if (num < 0)
 								{
-									base *= 10;
-								}
-								while (base > 0)
-								{
-									num_temp = num / base;
-									num = num % base;
-									putchar(num_temp + '0');
-									base = base / 10;
+									num = -num;
+									putchar('-');
 									len++;
+								}
+								if (num >= 0 && num <= 9)
+								{
+									putchar(num + '0');
+									len++;
+								}
+								if (num > 9)
+								{
+									base = 10;
+									while (num / base > 9)
+										base *= 10;
+									while (base > 0)
+									{
+										num_temp = num / base;
+										num = num % base;
+										putchar(num_temp + '0');
+										base = base / 10;
+										len++;
+									}
 								}
 							}
 							break;
