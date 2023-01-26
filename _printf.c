@@ -43,7 +43,7 @@ int _printf(const char *format, ...)
 					switch (format[i])
 					{
 						case 'c':
-							ch = ((char)va_arg(arguments, int));
+							ch = (char)va_arg(arguments, int);
 							if (ch == '\0')
 								write(1, "(null)", 6);
 							else
