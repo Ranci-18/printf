@@ -15,17 +15,19 @@ int _printf(const char *format, ...)
 	va_list arguments;
 	int i, j;
 	int len = 0;
-	char *str, *buf;
+	char *str;
+	int num, num_temp, base;
 
-	va_start(arguments, format);
 	if (!format)
 		return (-1);
+
+	va_start(arguments, format);
 	for (i = 0; format[i] != '\0'; i++)
 	{
-		putchar(format[i]);
-		len++;
 		if (format[i] == '%')		
 		{
+			if (format[i + 1] == '\0')
+				return (-1);
 			i++;
 			switch (format[i])
 			{
@@ -35,29 +37,60 @@ int _printf(const char *format, ...)
 				break;
 			case 's':
 				str = va_arg(arguments, char*);
-				if (str != NULL)
+				if (str == NULL)
+				{
+					write(1, "(null)", 0);
+				}
+				else
+				{
+					for (j = 0; str[j] != '\0'; j++)
 					{
-						for (j = 0; str[j] != '\0'; j++)
-						{
-							putchar(str[j]);
-							len++;
-						}
+						putchar(str[j]);
+						len++;
 					}
+				}
 				break;
 			case 'd':
 			case 'i':
-				buf = malloc(strlen(format));
-				len = sprintf(buf, "%i", va_arg(arguments, int));
-				write(1, buf, strlen(buf));
+				num = va_arg(arguments, int);
+				if (num < 0)
+				{
+					num = -num;
+					putchar('-');
+					len++;
+				}
+				if (num >= 0 && num <= 9)
+				{
+					putchar(num + '0');
+					len++;
+				}
+				if (num > 9)
+				{
+					base = 10;
+					while (num / base > 9)
+					{
+						base *= 10;
+					}
+					while (base > 0)
+					{
+						num_temp = num / base;
+						num = num % base;
+						putchar(num_temp + '0');
+						base = base / 10;
+						len++;
+					}
+				}
 				break;
 			case '%':
 				putchar('%');
 				len++;
 				break;
-			default:
-				putchar(format[i]);
-				len++;
 			}
+		}
+		else
+		{
+			putchar(format[i]);
+			len++;
 		}
 	}
 	va_end(arguments);
