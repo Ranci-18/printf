@@ -15,7 +15,7 @@ int _printf(const char *format, ...)
 	va_list arguments;
 	int i, j;
 	int len = 0;
-	char *str, ch;
+	char *str;
 	int num, num_temp, base;
 
 	if (!format || format == NULL)
@@ -43,14 +43,8 @@ int _printf(const char *format, ...)
 					switch (format[i])
 					{
 						case 'c':
-							ch = (char)va_arg(arguments, int);
-							if (ch == '\0')
-								write(1, "(null)", 6);
-							else
-							{
-								putchar(ch);
-								len++;
-							}
+							putchar((char)va_arg(arguments, int));
+							len++;
 							break;
 						case 's':
 							str = va_arg(arguments, char*);
@@ -70,9 +64,6 @@ int _printf(const char *format, ...)
 						case 'd':
 						case 'i':
 							num = va_arg(arguments, int);
-							if (num == '\0')
-								write(1, "(null)", 6);
-							else
 							{
 								if (num < 0)
 								{
